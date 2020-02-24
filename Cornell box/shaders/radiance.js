@@ -180,7 +180,7 @@ function makeSceneShaders(tot_triangles) {
         vec2 ndcuv = (vUv * 2.0 - 1.0) * vec2(uAspectRatio, 1.0);
 
         // "height normalizer"
-        float hn = tan(/* IN RADIANTI, NON IN GRADI, COGLIONR! */ (PI * 45.0 * 0.5) / 180.0);
+        float hn = tan(/* IN RADIANTI, NON IN GRADI! */ (PI * 45.0 * 0.5) / 180.0);
         ndcuv *= hn;
 
 

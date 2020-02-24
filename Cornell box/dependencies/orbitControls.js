@@ -1091,7 +1091,7 @@ var OrbitControls = function ( object, domElement ) {
 
 				handleTouchMoveRotate( event );
 
-				scope.update();
+				// scope.update();
 
 				break;
 
@@ -1101,7 +1101,7 @@ var OrbitControls = function ( object, domElement ) {
 
 				handleTouchMovePan( event );
 
-				scope.update();
+				// scope.update();
 
 				break;
 
@@ -1111,7 +1111,7 @@ var OrbitControls = function ( object, domElement ) {
 
 				handleTouchMoveDollyPan( event );
 
-				scope.update();
+				// scope.update();
 
 				break;
 
@@ -1121,7 +1121,7 @@ var OrbitControls = function ( object, domElement ) {
 
 				handleTouchMoveDollyRotate( event );
 
-				scope.update();
+				// scope.update();
 
 				break;
 
