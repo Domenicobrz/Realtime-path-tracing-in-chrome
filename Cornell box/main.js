@@ -131,12 +131,6 @@ function init() {
         side: THREE.DoubleSide,
     });
 
-    window.positionBufferMaterialCULL = new THREE.ShaderMaterial({
-        fragmentShader: position_fs,
-        vertexShader: position_vs,
-        side: THREE.FrontSide,
-    });
-
     normalBufferMaterial = new THREE.ShaderMaterial({
         uniforms: {
             "uCameraPos": { value: camera.position },
@@ -152,23 +146,6 @@ function init() {
         side: THREE.DoubleSide,
     });
 
-    window.materialBufferMaterialCULL = new THREE.ShaderMaterial({
-        fragmentShader: material_fs,
-        vertexShader: material_vs,
-        side: THREE.FrontSide,
-    });
-
-    
-
-    window.normalBufferMaterialCULL = new THREE.ShaderMaterial({
-        uniforms: {
-            "uCameraPos": { value: camera.position },
-        },
-        fragmentShader: normal_fs,
-        vertexShader: normal_vs,
-        side: THREE.FrontSide,
-    });
-
     momentBufferMaterial = new THREE.ShaderMaterial({
         uniforms: {
             "uOldModelViewMatrix": { value: new THREE.Matrix4() },
@@ -176,15 +153,6 @@ function init() {
         fragmentShader: momentMove_fs,
         vertexShader: momentMove_vs,
         side: THREE.DoubleSide,
-    });
-
-    window.momentBufferMaterialCULL = new THREE.ShaderMaterial({
-        uniforms: {
-            "uOldModelViewMatrix": { value: new THREE.Matrix4() },
-        },
-        fragmentShader: momentMove_fs,
-        vertexShader: momentMove_vs,
-        side: THREE.FrontSide,
     });
 
     radianceBufferMaterial = new THREE.ShaderMaterial({
@@ -249,18 +217,6 @@ function init() {
         side: THREE.DoubleSide,
     });
 
-    window.historyTestMaterialCULL = new THREE.ShaderMaterial({
-        uniforms: {
-            "uNormalBuffer":   { type: "t", value: normalRT.texture   },
-            "uPositionBuffer": { type: "t", value: positionRT.texture },
-            "uMomentMove":     { type: "t", value: momentMoveRT.texture },
-            "uCameraPos":      { type: "t", value: camera.position },
-            "uInvScreenSize":  { value: new THREE.Vector2(1 / innerWidth, 1 / innerHeight) },
-        },
-        fragmentShader: historyTest_fs,
-        vertexShader: historyTest_vs,
-        side: THREE.FrontSide,
-    });
 
     historyAccumMaterial = new THREE.ShaderMaterial({
         uniforms: {
@@ -472,23 +428,20 @@ function animate(now) {
     let mgCULL = createMomentGeometry(newgeo.geometryCULL, oldgeometryCULL);
     let mg     = createMomentGeometry(newgeo.geometry, oldgeometry);
 
-    momentBufferMaterialCULL.uniforms.uOldModelViewMatrix.value = oldCameraMatrix;
-    momentBufferMaterialCULL.uniforms.uOldModelViewMatrix.needsUpdate = true;
-    momentBufferMaterialCULL.uniforms.needsUpdate = true;
-    momentBufferMaterialCULL.needsUpdate = true;
-    renderer.setRenderTarget(momentMoveRT);
-    mesh.material = momentBufferMaterialCULL;
-    renderer.clear();
-    mesh.geometry = mgCULL;
-    renderer.render( scene, camera );
-
     momentBufferMaterial.uniforms.uOldModelViewMatrix.value = oldCameraMatrix;
     momentBufferMaterial.uniforms.uOldModelViewMatrix.needsUpdate = true;
     momentBufferMaterial.uniforms.needsUpdate = true;
     momentBufferMaterial.needsUpdate = true;
+    momentBufferMaterial.side = THREE.FrontSide;
     renderer.setRenderTarget(momentMoveRT);
     mesh.material = momentBufferMaterial;
+    renderer.clear();
+    mesh.geometry = mgCULL;
+    renderer.render( scene, camera );
+
+    renderer.setRenderTarget(momentMoveRT);
     mesh.geometry = mg;
+    momentBufferMaterial.side = THREE.DoubleSide;
     renderer.render( scene, camera );
     // reassign the new geometry after we're done here...
     mesh.geometry = newgeo.geometry;
@@ -500,15 +453,15 @@ function animate(now) {
     // on rt1 we add the success vs unsuccess buffer (either +1 or -1)
     renderer.setRenderTarget(historyRT.rt1);
     renderer.clear();
-    mesh.material = historyTestMaterialCULL;
+    mesh.material = historyTestMaterial;
     mesh.geometry = newgeo.geometryCULL;
-    historyTestMaterialCULL.uniforms.uCameraPos.value = camera.position;
+    historyTestMaterial.uniforms.uCameraPos.value = camera.position;
+    historyTestMaterial.side = THREE.FrontSide;
     renderer.render( scene, camera );
 
     renderer.setRenderTarget(historyRT.rt1);
-    mesh.material = historyTestMaterial;
+    historyTestMaterial.side = THREE.DoubleSide;
     mesh.geometry = newgeo.geometry;
-    historyTestMaterial.uniforms.uCameraPos.value = camera.position;
     renderer.render( scene, camera );
 
 
@@ -529,42 +482,44 @@ function animate(now) {
 
     // **************** creating buffers
     renderer.setRenderTarget(positionRT);
-    mesh.material = positionBufferMaterialCULL;
+    mesh.material = positionBufferMaterial;
+    positionBufferMaterial.side = THREE.FrontSide;
     mesh.geometry = newgeo.geometryCULL;
     renderer.clear();
     renderer.render( scene, camera );
 
     renderer.setRenderTarget(positionRT);
-    mesh.material = positionBufferMaterial;
+    positionBufferMaterial.side = THREE.DoubleSide;
     mesh.geometry = newgeo.geometry;
     renderer.render( scene, camera );
 
 
 
     renderer.setRenderTarget(materialRT);
-    mesh.material = materialBufferMaterialCULL;
+    mesh.material = materialBufferMaterial;
+    mesh.material.side = THREE.FrontSide;
     mesh.geometry = newgeo.geometryCULL;
     renderer.clear();
     renderer.render( scene, camera );
 
     renderer.setRenderTarget(materialRT);
-    mesh.material = materialBufferMaterial;
+    mesh.material.side = THREE.DoubleSide;
     mesh.geometry = newgeo.geometry;
     renderer.render( scene, camera );
 
 
 
     renderer.setRenderTarget(normalRT);
-    mesh.material = normalBufferMaterialCULL;
+    mesh.material = normalBufferMaterial;
+    mesh.material.side = THREE.FrontSide;
     mesh.geometry = newgeo.geometryCULL;
-    normalBufferMaterialCULL.uniforms.uCameraPos.value = camera.position;
+    normalBufferMaterial.uniforms.uCameraPos.value = camera.position;
     renderer.clear();
     renderer.render( scene, camera );
     
     renderer.setRenderTarget(normalRT);
-    mesh.material = normalBufferMaterial;
     mesh.geometry = newgeo.geometry;
-    normalBufferMaterial.uniforms.uCameraPos.value = camera.position;
+    mesh.material.side = THREE.DoubleSide;
     renderer.render( scene, camera );
 
 
@@ -800,7 +755,7 @@ function initGUI() {
     });
 
     ptf.add(controller, 'spp', 1, 10).step(1);
-    ptf.add(controller, 'mirrorIndex', 1, 3).step(1);
+    ptf.add(controller, 'mirrorIndex', 1, 4).step(1);
 
     rpf.add(controller, 'maxFramesHistory', 0, 100).step(1);
     rpf.add(controller, 'filterHistoryModulation', 0, 1);
