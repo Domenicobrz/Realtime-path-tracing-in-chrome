@@ -68,7 +68,7 @@ void main() {
 
     vec4 sum = vec4(0.0);
     vec2 step  = vec2(1./uScreenSize.x, 1./uScreenSize.y);
-    vec2 hstep = step * 0.0;
+    vec2 hstep = step * 0.5;
     vec4 cval = texture2D(uRadiance, vUv.st + hstep);
     vec4 nval = texture2D(uNormal,   vUv.st + hstep);
     vec4 pval = texture2D(uPosition, vUv.st + hstep);

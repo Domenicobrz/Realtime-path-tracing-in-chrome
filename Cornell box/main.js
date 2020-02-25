@@ -621,7 +621,7 @@ function initGUI() {
 
     var GUIcontroller = function() {
         this.c_phi = 105;
-        this.n_phi = 0;
+        this.n_phi = 0.01;
         this.p_phi = 1;
 
         this.c_phiMultPerIt = 0.34;
@@ -658,7 +658,7 @@ function initGUI() {
             this.filterHistoryModulation = 0.42;
             this.stepMultiplier = 1.6;
             this.c_phi = 105;
-            this.n_phi = 0;
+            this.n_phi = 0.01;
             this.p_phi = 1;
             this.maxFramesHistory = 10;
             this.atrous5x5 = false;
@@ -668,7 +668,7 @@ function initGUI() {
 
         this.highQuality = function() {
             this.c_phi = 105;
-            this.n_phi = 0;
+            this.n_phi = 0.01;
             this.p_phi = 1;
     
             this.c_phiMultPerIt = 0.34;
@@ -687,7 +687,7 @@ function initGUI() {
 
         this.veryHighQuality = function() {
             this.c_phi = 105;
-            this.n_phi = 0;
+            this.n_phi = 0.01;
             this.p_phi = 1;
     
             this.c_phiMultPerIt = 0.34;
@@ -731,7 +731,7 @@ function initGUI() {
     wff.add(controller, 'c_phi', 0, 200).onChange(function(value) {
         atrousMaterial.uniforms.uC_phi.value = value;
     });
-    wff.add(controller, 'n_phi', 0, 30).onChange(function(value) {
+    wff.add(controller, 'n_phi', 0.01, 30).onChange(function(value) {
         atrousMaterial.uniforms.uN_phi.value = value;
     }); 
     wff.add(controller, 'p_phi', 0, 30).onChange(function(value) {
