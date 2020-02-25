@@ -645,7 +645,7 @@ function initGUI() {
             this.maxFramesHistory = 10;
             this.c_phiMultPerIt = 0.34;
             this.c_phi = 105;
-            this.n_phi = 0;
+            this.n_phi = 0.01;
             this.p_phi = 1;
 
             this.updateGUI();
