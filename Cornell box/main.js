@@ -567,6 +567,11 @@ function animate(now) {
     atrousMaterial.uniforms.uMaxFramesHistory.value = controller.maxFramesHistory;
     atrousMaterial.uniforms.uFilterHistoryModulation.value = controller.filterHistoryModulation;
     atrousMaterial.uniforms.uStep.value  = 1.0;
+
+    atrousMaterial.uniforms.uStep.value  = Math.pow(controller.stepMultiplier, controller.iterations);
+    atrousMaterial.uniforms.uC_phi.value = controller.c_phi * Math.pow(controller.c_phiMultPerIt, controller.iterations);
+
+
     displayQuadMesh.material = atrousMaterial;
     renderer.clear();
     renderer.render(displayScene, camera );
@@ -576,8 +581,11 @@ function animate(now) {
 
         renderer.setRenderTarget(atrousRT.write);
         atrousMaterial.uniforms.uRadiance.value = atrousRT.read.texture;
-        atrousMaterial.uniforms.uStep.value  *= controller.stepMultiplier;
-        atrousMaterial.uniforms.uC_phi.value *= controller.c_phiMultPerIt;
+        // atrousMaterial.uniforms.uStep.value  *= controller.stepMultiplier;
+        // atrousMaterial.uniforms.uC_phi.value *= controller.c_phiMultPerIt;
+        
+        atrousMaterial.uniforms.uStep.value  /= controller.stepMultiplier;
+        atrousMaterial.uniforms.uC_phi.value /= controller.c_phiMultPerIt;
         displayQuadMesh.material = atrousMaterial;
         renderer.clear();
         renderer.render(displayScene, camera );
