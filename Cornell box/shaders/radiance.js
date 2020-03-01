@@ -235,16 +235,18 @@ function makeSceneShaders(tot_triangles) {
                 }
 
                 if(ir.meshIndex > 14.0) {
+                    // radiance += vec3(6.0, 5.5, 4.5) * mult;
                     radiance += vec3(6.0) * mult;
                 }
                 if(ir.meshIndex == 1.0) {
                     // albedo = vec3(1.0, 0.3, 0.15);
                     albedo = vec3(1.0, 0.3, 0.15);
+                    albedo = vec3(1.0, 0.15, 0.05);
                 }
                 if(ir.meshIndex == 2.0) {
                     // albedo = vec3(0.15, 1.0, 0.3);
-                    albedo = vec3(0.15, 0.6, 1.0).yzx;
-                    // albedo = vec3(0.949, 0.2627, 0.2);
+                    albedo = vec3(0.6, 1.0, 0.15);
+                    albedo = vec3(0.3, 1.0, 0.08);
                 }
 
 
